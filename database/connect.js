@@ -1,8 +1,9 @@
 import pg from "pg";
+import dotenv from "dotenv";
+dotenv.config();
 const { Pool } = pg;
 const pool = new Pool({
-  connectionString:
-    "postgres://hbpbwwde:vvHuMw4EIauh2KInKMZ38RtBNyFi1LCr@satao.db.elephantsql.com/hbpbwwde",
+  connectionString: process.env.QUERYSTRING,
 });
 
 async function fetch(queryString, ...params) {

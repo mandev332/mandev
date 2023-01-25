@@ -39,6 +39,10 @@ const UserConter = {
   POST: async (req, res, next) => {},
   PUT: async (req, res, next) => {},
   DElETE: async (req, res, next) => {},
+  TOKEN: async (req, res, next) => {
+    console.log(req.url);
+    res.send("ok");
+  },
 };
 
 export default UserConter;
