@@ -1,5 +1,9 @@
+import sha256 from "sha256";
+import url from "url";
+import qs from "querystring";
 import { fetch, fetchAll } from "../database/connect.js";
 import { userModel } from "../MODELS/userModel.js";
+import { jwt } from "./jwt.js";
 const { GET, GETALL, POST, PUT, DELETE } = userModel;
 const UserConter = {
   GET: async (req, res, next) => {
@@ -38,11 +42,7 @@ const UserConter = {
   },
   POST: async (req, res, next) => {},
   PUT: async (req, res, next) => {},
-  DElETE: async (req, res, next) => {},
-  TOKEN: async (req, res, next) => {
-    console.log(req.url);
-    res.send("ok");
-  },
+  DELETE: async (req, res, next) => {},
 };
 
 export default UserConter;

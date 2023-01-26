@@ -7,6 +7,19 @@
     <title>Document</title>
   </head>
   <body>
-    <a href=""></a>
+    <button onclick="get()">ssssss</button>
+    <script>
+      let [gmail, password] = document.cookie.split("=");
+      async function get() {
+        const response = await fetch("http://localhost:5050/register2", {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            gmail,
+            password,
+          },
+        });
+      }
+    </script>
   </body>
 </html>
