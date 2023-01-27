@@ -1,11 +1,33 @@
-import nodemailer from "nodemailer";
+import fs from "fs";
 import path from "path";
+import sha256 from "sha256";
+import nodemailer from "nodemailer";
+
 import { fetch, fetchAll } from "../database/connect.js";
 import { userModel } from "../MODELS/userModel.js";
-import fs from "fs";
-import sha256 from "sha256";
 import { jwt } from "./jwt.js";
+
 const auth = {
+  LOGIN: async (req, res, next) => {
+    try {
+      const { gmail, password } = req.body;
+      const user = await fetch(userModel.LOGIN, gmail, sha256(password));
+      if (!user)
+        throw new Error("You are not registered! Siz ro'yxatdan o'tmagansiz!");
+      res.send({
+        status: 200,
+        data: jwt.SIGN(user.id),
+        message: "Welcome - Save a token! Xush kelibsiz - Tokenni saqlang!",
+      });
+    } catch (error) {
+      res.send({
+        status: 401,
+        data: null,
+        message: error.message,
+      });
+    }
+  },
+
   CHECK: async (req, res, next) => {
     try {
       const { gmail, password } = req.body;
@@ -20,8 +42,6 @@ const auth = {
         throw new Error(
           "You are already authorized! Siz allaqachon avtorizatsiya qilgansiz!"
         );
-      // if (user.pass == sha256(password)) return next();
-      // else throw new Error("Wrong your password!");
 
       let transporter = nodemailer.createTransport({
         service: "gmail",
@@ -30,8 +50,7 @@ const auth = {
           pass: "fyqdqumarcqabbgy",
         },
       });
-      let cod = (Math.random() * 1000000 + 100000).toFixed(0);
-      console.log(cod);
+      let cod = (Math.random() * 900000 + 100000).toFixed(0);
       const mailOptions = {
         from: "nodirbekqobilov332@gmail.com",
         to: gmail,
@@ -48,9 +67,14 @@ const auth = {
             message:
               "We will send a code to your Gmail address! Gmail manzilingizga kod yubordik!",
           });
+        let user = { gmail, password, cod, date: new Date() };
+        const kesh = JSON.parse(
+          fs.readFileSync(path.join(process.cwd(), "kesh.json"))
+        );
+        kesh.push(user);
         fs.writeFileSync(
           path.join(process.cwd(), "kesh.json"),
-          JSON.stringify({ gmail, password, cod, date: new Date() }, null, 4)
+          JSON.stringify(kesh, null, 4)
         );
       });
     } catch (error) {
@@ -61,25 +85,29 @@ const auth = {
       });
     }
   },
+
   PASS: async (req, res, next) => {
     try {
       const { checkPass } = req.body;
-      let userInfo = JSON.parse(
-        fs.readFileSync(path.join(process.cwd(), "kesh.json")) || "{}"
+      let userKesh = JSON.parse(
+        fs.readFileSync(path.join(process.cwd(), "kesh.json"))
       );
-      if (
-        !Object.keys(userInfo).length ||
-        parseInt((new Date() - new Date(userInfo.date)) / 86400) > 6
-      ) {
-        fs.writeFileSync(path.join(process.cwd(), "kesh.json"), "{}");
+      let userPass = userKesh.find((e) => e.password == checkPass);
+      userKesh = userKesh.filter((e) => e.password != checkPass);
+      fs.writeFileSync(
+        path.join(process.cwd(), "kesh.json"),
+        JSON.stringify(userKesh, null, 4)
+      );
+      if (!userPass) throw new Error("Kod to'gri kelmadi");
+
+      if (parseInt((new Date() - new Date(userPass.date)) / 86400) > 6) {
         throw new Error("60 soniya tugadi qayta kod yuborilsinmi?");
       }
-      if (checkPass != userInfo.cod) throw new Error("Kod to'gri kelmadi");
 
       res.send({
         status: 200,
         data: null,
-        message: "/register2",
+        message: "/register",
       });
     } catch (error) {
       res.send({
@@ -89,14 +117,19 @@ const auth = {
       });
     }
   },
-  LOGIN: async (req, res, next) => {},
+
   REGISTER: async (req, res, next) => {
     try {
-      const { file } = req.files;
-      const { username, contact, profession } = req.body;
-      const gmail = req.headers.gmail;
-      const password = req.headers.password;
+      const file = req?.files?.file;
+      const { username, contact, profession, gender } = req.body;
+      const { password, gmail } = JSON.parse(
+        fs.readFileSync(path.join(process.cwd(), "kesh.json"))
+      );
       let avatar = null;
+      if (!password || !gmail)
+        throw new Error(
+          "You need to register Gmail! Gmail-ni ro'yxatdan o'tkazishingiz zarur!"
+        );
 
       if (!username || !contact || !profession)
         throw new Error(
@@ -115,10 +148,12 @@ const auth = {
         username,
         contact,
         gmail,
-        password,
-        avatar,
-        profession
+        sha256(password),
+        avatar || gender == "male" ? "/users/boy" : "/users/girl.jpg",
+        profession,
+        gender
       );
+
       res.send({
         status: 200,
         data: response,
@@ -133,4 +168,5 @@ const auth = {
     }
   },
 };
+
 export { auth };

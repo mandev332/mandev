@@ -8,9 +8,11 @@ CREATE TABLE users (
     password VARCHAR(64) NOT NULL,
     avatar VARCHAR(128) DEFAULT 'https://pbs.twimg.com/profile_images/1435865990059986945/eHkoYnjx_400x400.jpg',
     profession VARCHAR(32) NOT NULL,
-    role VARCHAR(10) DEFAULT 'user'
+    role VARCHAR(10) DEFAULT 'user',
+    gender varchar(10) default 'male'
 );
 drop TABLE users;
+Alter table users add column gender varchar(10) default 'male'; 
 ALTER TABLE users ALTER COLUMN password type varchar(64) not null;
 
 CREATE TABLE articles (

@@ -7,9 +7,10 @@ userRouter
   .get("/users", contrUser.GET)
   .get("/user/:id", contrUser.GET)
   .post("/users", contrUser.POST)
-  .post("/register", auth.CHECK)
-  .post("/register2", auth.PASS)
-  .post("/register3", auth.REGISTER)
+  .post("/gmail", auth.CHECK)
+  .post("/password", auth.PASS)
+  .post("/register", auth.REGISTER)
+  .post("/login", auth.LOGIN)
   .put("/user/:id", contrUser.PUT)
   .delete("/user/:id", contrUser.DELETE);
 
