@@ -8,6 +8,21 @@ import { userModel } from "../MODELS/userModel.js";
 import { jwt } from "./jwt.js";
 
 const auth = {
+  TOKEN: async (req, res, next) => {
+    try {
+      const token = req.headers?.token;
+      if (jwt.VERIFY(token) instanceof Error) throw new Error("Not Auth");
+      const user = jwt.VERIFY(token);
+      req.user = user;
+      return next();
+    } catch (error) {
+      res.send({
+        status: 401,
+        data: null,
+        message: error.message,
+      });
+    }
+  },
   LOGIN: async (req, res, next) => {
     try {
       const { gmail, password } = req.body;
@@ -67,11 +82,11 @@ const auth = {
             message:
               "We will send a code to your Gmail address! Gmail manzilingizga kod yubordik!",
           });
-        let user = { gmail, password, cod, date: new Date() };
+        let userKesh = { gmail, password, cod, date: new Date() };
         const kesh = JSON.parse(
           fs.readFileSync(path.join(process.cwd(), "kesh.json"))
         );
-        kesh.push(user);
+        kesh.push(userKesh);
         fs.writeFileSync(
           path.join(process.cwd(), "kesh.json"),
           JSON.stringify(kesh, null, 4)
@@ -92,16 +107,12 @@ const auth = {
       let userKesh = JSON.parse(
         fs.readFileSync(path.join(process.cwd(), "kesh.json"))
       );
-      let userPass = userKesh.find((e) => e.password == checkPass);
-      userKesh = userKesh.filter((e) => e.password != checkPass);
-      fs.writeFileSync(
-        path.join(process.cwd(), "kesh.json"),
-        JSON.stringify(userKesh, null, 4)
-      );
+      let userPass = userKesh.find((e) => e.cod == checkPass);
+
       if (!userPass) throw new Error("Kod to'gri kelmadi");
 
-      if (parseInt((new Date() - new Date(userPass.date)) / 86400) > 6) {
-        throw new Error("60 soniya tugadi qayta kod yuborilsinmi?");
+      if (parseInt((new Date() - new Date(userPass.date)) / 86400) > 12) {
+        throw new Error("2 daqiqa tugadi qayta kod yuborilsinmi?");
       }
 
       res.send({
@@ -118,15 +129,53 @@ const auth = {
     }
   },
 
+  UPLOAD: async (req, res, next) => {
+    try {
+      if (!req?.files?.file && req.method == "PUT") return next();
+      let user;
+      let avatar;
+      const file = req?.files?.file;
+      if (!file) return next();
+      let { contact } = req.body;
+      if (req.method == "PUT") {
+        user = await fetch(userModel.GET, req.user.id);
+      } else {
+        let phoneRegex = new RegExp("^(9[012345789]|88|33)[0-9]{7}$");
+        if (!phoneRegex.test(contact)) {
+          throw new Error("Invalid contact! Telefon raqam noaniq");
+        }
+      }
+
+      let filePath = path.join(
+        process.cwd(),
+        "avatarka",
+        "users",
+        contact || user.contact || "/boy.jpg"
+      );
+      if (
+        user?.avatar &&
+        !["/users/boy.jpg", "/users/girl.jpg"].includes(user.avatar)
+      ) {
+        fs.unlinkSync(path.join(process.cwd(), "avatarka", user.avatar));
+      }
+      let type = file.mimetype.split("/")[1];
+      avatar = "/users/" + (contact || user.contact) + "." + type;
+      await file.mv(filePath + "." + type);
+      req.body.avatar = avatar;
+      return next();
+    } catch (error) {
+      res.send({
+        status: 504,
+        data: "upload",
+        message: error.message,
+      });
+    }
+  },
   REGISTER: async (req, res, next) => {
     try {
-      const file = req?.files?.file;
-      const { username, contact, profession, gender } = req.body;
-      const { password, gmail } = JSON.parse(
-        fs.readFileSync(path.join(process.cwd(), "kesh.json"))
-      );
-      let avatar = null;
-      if (!password || !gmail)
+      const { username, contact, gmail, password, avatar, profession, gender } =
+        req.body;
+      if (!gmail)
         throw new Error(
           "You need to register Gmail! Gmail-ni ro'yxatdan o'tkazishingiz zarur!"
         );
@@ -136,12 +185,7 @@ const auth = {
           "You must send username, contact and profession! Siz ismingiz, telefon raqamingiz va yo'nalishingizni  yuborishingiz zarur!"
         );
 
-      if (file) {
-        let filePath = path.join(process.cwd(), "avatarka", "users", contact);
-        let type = file.mimetype.split("/")[1];
-        avatar = "/users/" + contact + "." + type;
-        await file.mv(filePath + "." + type);
-      }
+      jwt.RegExp(username, contact, password, profession, gender);
 
       let response = await fetch(
         userModel.POST,
@@ -156,7 +200,7 @@ const auth = {
 
       res.send({
         status: 200,
-        data: response,
+        data: jwt.SIGN({ id: response.id }),
         message: "User added in users! Foydalanuvchi ro'yxatga qo'shildi!",
       });
     } catch (error) {

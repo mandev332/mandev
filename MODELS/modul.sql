@@ -118,3 +118,5 @@ INSERT INTO comments (user_id, art_id, comment) VALUES
 (4,2,'o''rtacha mavzu bo''libdi'),
 (5,3,'tushunushga qiyin maqola bo''lindi'),
 (5,2,'real maqola bo''lindi');
+
+delete from users where id = 14;
