@@ -120,3 +120,8 @@ INSERT INTO comments (user_id, art_id, comment) VALUES
 (5,2,'real maqola bo''lindi');
 
 delete from users where id = 14;
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjIsImlhdCI6MTY3NTE4Mzc1Mn0.Q9KnWf-aCUPMAsAMsrvb1CDASSIw7bI4PbDAg5etIk0=22
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsImlhdCI6MTY3NTE4MzkzMH0.M0ZJCYGE12IydyNxLlZjlX44WXhLD5obc0MRxMOp0us=23
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQsImlhdCI6MTY3NTE4NDAzMX0.EyCQSu2wmJm8kvwFZWAc3-pwwkUL3hesN3nhoySIJHo=24

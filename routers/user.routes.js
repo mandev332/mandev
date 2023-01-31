@@ -11,6 +11,6 @@ userRouter
   .post("/register", auth.UPLOAD, auth.REGISTER)
   .post("/login", auth.LOGIN)
   .put("/users", auth.TOKEN, auth.UPLOAD, contrUser.PUT)
-  .delete("/user/:id", contrUser.DELETE);
+  .delete("/users", contrUser.DELETE);
 
 export default userRouter;

@@ -139,6 +139,7 @@ const auth = {
       let { contact } = req.body;
       if (req.method == "PUT") {
         user = await fetch(userModel.GET, req.user.id);
+        console.log(user);
       } else {
         let phoneRegex = new RegExp("^(9[012345789]|88|33)[0-9]{7}$");
         if (!phoneRegex.test(contact)) {
@@ -162,6 +163,7 @@ const auth = {
       avatar = "/users/" + (contact || user.contact) + "." + type;
       await file.mv(filePath + "." + type);
       req.body.avatar = avatar;
+
       return next();
     } catch (error) {
       res.send({
@@ -175,6 +177,10 @@ const auth = {
     try {
       const { username, contact, gmail, password, avatar, profession, gender } =
         req.body;
+      console.log(
+        avatar,
+        avatar || (gender == "male" ? "/users/boy.jpg" : "/users/girl.jpg")
+      );
       if (!gmail)
         throw new Error(
           "You need to register Gmail! Gmail-ni ro'yxatdan o'tkazishingiz zarur!"
@@ -193,7 +199,7 @@ const auth = {
         contact,
         gmail,
         sha256(password),
-        avatar || gender == "male" ? "/users/boy" : "/users/girl.jpg",
+        avatar || (gender == "male" ? "/users/boy.jpg" : "/users/girl.jpg"),
         profession,
         gender
       );

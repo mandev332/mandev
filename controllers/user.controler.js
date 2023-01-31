@@ -1,5 +1,7 @@
-import { jwt } from "./jwt.js";
+import fs from "fs";
+import path from "path";
 import sha256 from "sha256";
+import { jwt } from "./jwt.js";
 import { fetch, fetchAll } from "../database/connect.js";
 import { userModel } from "../MODELS/userModel.js";
 
@@ -50,15 +52,22 @@ const UserConter = {
             "You need to register first!! Avval ro'yxatdan o'tishingiz zarur!"
           );
 
-        const {
-          username,
-          contact,
-          gmail,
-          password,
-          avatar,
-          profession,
-          gender,
-        } = req.body;
+        let { username, contact, gmail, password, avatar, profession, gender } =
+          req.body;
+
+        if (contact && !avatar) {
+          fs.renameSync(
+            path.join(process.cwd(), "avatarka", user.avatar),
+            path.join(
+              process.cwd(),
+              "avatarka",
+              "users",
+              contact + "." + user.avatar.split(".")[1]
+            )
+          );
+          avatar = `/users/${contact}.${user.avatar.split(".")[1]}`;
+        }
+
         if (
           !username &&
           !contact &&
