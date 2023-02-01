@@ -5,12 +5,11 @@ import nodemailer from "nodemailer";
 import { fetch } from "../database/connect.js";
 import { userModel } from "../MODELS/userModel.js";
 import { jwt } from "./jwt.js";
+
 const auth = {
   TOKEN: async (req, res, next) => {
     try {
       const token = req.headers?.token;
-      console.log(token);
-      console.log(jwt.VERIFY(token));
       if (jwt.VERIFY(token) instanceof Error)
         throw new Error("You are not registered! Siz ro'yxatdan o'tmagansiz!");
       const user = jwt.VERIFY(token);
@@ -207,7 +206,7 @@ const auth = {
 
       res.send({
         status: 200,
-        data: jwt.SIGN({ id: response.id }),
+        data: jwt.SIGN({ id: response }),
         message: "User added in users! Foydalanuvchi ro'yxatga qo'shildi!",
       });
     } catch (error) {
