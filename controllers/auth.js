@@ -5,7 +5,7 @@ import nodemailer from "nodemailer";
 import { fetch } from "../database/connect.js";
 import { userModel } from "../MODELS/userModel.js";
 import { jwt } from "./jwt.js";
-
+  console.log(2,jwt);
 const auth = {
   TOKEN: async (req, res, next) => {
     try {

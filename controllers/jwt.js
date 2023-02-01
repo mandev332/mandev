@@ -1,5 +1,5 @@
 import JWT from "jsonwebtoken";
-
+console.log(1, JWT);
 const jwt = {
   SIGN: (token) => {
     try {
