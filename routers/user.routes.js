@@ -4,13 +4,13 @@ import contrUser from "../controllers/user.controler.js";
 
 const userRouter = Router();
 userRouter
-  .get("/users", contrUser.GET)
-  .get("/user/:id", contrUser.GET)
+  .get("/users", auth.TOKEN, contrUser.GET)
+  .get("/users/:id", auth.TOKEN, contrUser.GET)
   .post("/gmail", auth.CHECK)
   .post("/password", auth.PASS)
   .post("/register", auth.UPLOAD, auth.REGISTER)
   .post("/login", auth.LOGIN)
   .put("/users", auth.TOKEN, auth.UPLOAD, contrUser.PUT)
-  .delete("/users", contrUser.DELETE);
+  .delete("/users", auth.TOKEN, contrUser.DELETE);
 
 export default userRouter;

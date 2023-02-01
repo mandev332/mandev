@@ -2,8 +2,7 @@ import fs from "fs";
 import path from "path";
 import sha256 from "sha256";
 import nodemailer from "nodemailer";
-
-import { fetch, fetchAll } from "../database/connect.js";
+import { fetch } from "../database/connect.js";
 import { userModel } from "../MODELS/userModel.js";
 import { jwt } from "./jwt.js";
 
@@ -11,7 +10,8 @@ const auth = {
   TOKEN: async (req, res, next) => {
     try {
       const token = req.headers?.token;
-      if (jwt.VERIFY(token) instanceof Error) throw new Error("Not Auth");
+      if (jwt.VERIFY(token) instanceof Error)
+        throw new Error("You are not registered! Siz ro'yxatdan o'tmagansiz!");
       const user = jwt.VERIFY(token);
       req.user = user;
       return next();
@@ -23,6 +23,7 @@ const auth = {
       });
     }
   },
+
   LOGIN: async (req, res, next) => {
     try {
       const { gmail, password } = req.body;
@@ -139,7 +140,6 @@ const auth = {
       let { contact } = req.body;
       if (req.method == "PUT") {
         user = await fetch(userModel.GET, req.user.id);
-        console.log(user);
       } else {
         let phoneRegex = new RegExp("^(9[012345789]|88|33)[0-9]{7}$");
         if (!phoneRegex.test(contact)) {
