@@ -25,10 +25,10 @@ async function fetch(queryString, ...params) {
   }
 }
 
-async function fetchAll(query) {
+async function fetchAll(query, ...params) {
   const client = await pool.connect();
   try {
-    const { rows } = await client.query(query);
+    const { rows } = await client.query(query, params.length ? params : null);
     return rows;
   } catch (err) {
     return err;

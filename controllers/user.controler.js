@@ -13,10 +13,13 @@ const UserConter = {
 
       let user = await fetch(GET, id);
       if (user.role == "admin") {
-        let userId = req.params.id;
+        let userId = req?.params.id;
         if (userId) {
           let finduser = await fetch(GET, userId);
-          if (!finduser) throw new Error("Not found user = " + userId);
+          if (!finduser)
+            throw new Error(
+              `Not found user = ${artId}!, ${artId} - foydalanuvchi topilmadi!`
+            );
           res.send({
             status: 200,
             data: finduser,
