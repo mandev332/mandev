@@ -59,7 +59,6 @@ const ArticleConter = {
           });
         } else {
           let arts = await fetchAll(GETUSER, user.id);
-          console.log(arts);
           if (arts.length)
             res.send({
               status: 200,
