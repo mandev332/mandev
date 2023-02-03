@@ -8,8 +8,8 @@ articleRouter
   .get("/articles/user/:id", auth.TOKEN, art.GETUSER)
   .get("/articles", art.GET)
   .get("/articles/:id", art.GET)
-  .post("/articles", auth.TOKEN)
-  .put("/articles/:id", art.PUT)
+  .post("/articles", auth.TOKEN, art.UPLOAD, art.POST)
+  .put("/articles/:id", auth.TOKEN, art.UPLOAD, art.PUT)
   .delete("/articles/:id", art.DELETE);
 
 export default articleRouter;

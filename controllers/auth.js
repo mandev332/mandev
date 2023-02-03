@@ -151,7 +151,7 @@ const auth = {
         process.cwd(),
         "avatarka",
         "users",
-        contact || user.contact || "/boy.jpg"
+        contact || user.contact
       );
       if (
         user?.avatar &&
@@ -177,10 +177,6 @@ const auth = {
     try {
       const { username, contact, gmail, password, avatar, profession, gender } =
         req.body;
-      console.log(
-        avatar,
-        avatar || (gender == "male" ? "/users/boy.jpg" : "/users/girl.jpg")
-      );
       if (!gmail)
         throw new Error(
           "You need to register Gmail! Gmail-ni ro'yxatdan o'tkazishingiz zarur!"

@@ -1,7 +1,9 @@
+import fs from "fs";
+import path from "path";
 import { fetch, fetchAll } from "../database/connect.js";
 import { userModel } from "../MODELS/userModel.js";
 import { articleModel } from "../MODELS/articleModel.js";
-const { GET, GETUSER, GETALL, PUT, DELETE } = articleModel;
+const { GET, GETUSER, GETALL, POST, PUT, DELETE } = articleModel;
 
 const ArticleConter = {
   GET: async (req, res, next) => {
@@ -79,70 +81,82 @@ const ArticleConter = {
       });
     }
   },
+  UPLOAD: async (req, res, next) => {
+    try {
+      if (!req?.files?.file && req.method == "PUT") return next();
+      let cod = (Math.random() * 900000 + 100000).toFixed(0);
+      let art;
+      req.body.image = null;
+      const file = req?.files?.file;
+      if (!file) return next();
+      if (req.method == "PUT" && req?.params.id) {
+        art = await fetch(GET, req.params.id);
+      }
+      let filePath = path.join(process.cwd(), "avatarka", "sites", cod);
+      if (art?.image) {
+        fs.unlinkSync(path.join(process.cwd(), "avatarka", art.image));
+      }
+      let type = file.mimetype.split("/")[1];
+      req.body.image = "/sites/" + cod + "." + type;
+      await file.mv(filePath + "." + type);
+      return next();
+    } catch (error) {
+      res.send({
+        status: 504,
+        data: "upload",
+        message: error.message,
+      });
+    }
+  },
+  POST: async (req, res, next) => {
+    try {
+      const { id } = req?.user;
+      const { title, description, image } = req.body;
+      if (!title || !description)
+        throw new Error(
+          "You must send title and description! Siz mavzu va maqola yuborishingiz zarur!"
+        );
+      let post = await fetch(POST, id, title, description, image);
 
+      res.send({
+        status: 200,
+        data: post,
+        message: "Article added! Maqola qo'shildi!",
+      });
+    } catch (error) {
+      res.send({
+        status: 404,
+        data: null,
+        message: err.message,
+      });
+    }
+  },
   PUT: async (req, res, next) => {
     try {
-      if (req.art.id) {
-        let art = await fetch(GET, req.art.id);
-        if (!art)
-          throw new Error(
-            "You need to register first!! Avval ro'yxatdan o'tishingiz zarur!"
-          );
+      let art = await fetch(GET, req.params.id);
+      if (!art) throw new Error("This article not found! Bu maqola topilmadi!");
 
-        let { artname, contact, gmail, password, avatar, profession, gender } =
-          req.body;
-
-        if (contact && !avatar) {
-          fs.renameSync(
-            path.join(process.cwd(), "avatarka", art.avatar),
-            path.join(
-              process.cwd(),
-              "avatarka",
-              "arts",
-              contact + "." + art.avatar.split(".")[1]
-            )
-          );
-          avatar = `/arts/${contact}.${art.avatar.split(".")[1]}`;
-        }
-
-        if (
-          !artname &&
-          !contact &&
-          !gmail &&
-          !password &&
-          !avatar &&
-          !profession &&
-          !gender
-        )
-          throw new Error(
-            "You must send someone data! Siz biron-bir ma'lumot yuborishingiz kerak!"
-          );
-        let responseRegExp = await jwt.RegExp(
-          artname || art.artname,
-          contact || art.contact,
-          password || "password",
-          profession || art.profession,
-          gender || art.gender
+      const { title, description, image } = req.body;
+      if (!title && !description && !image)
+        throw new Error(
+          "You need send sameone date for change! O'zgarish uchun bironta ma'lumot yuborishingiz zarur!"
         );
-        if (1 != responseRegExp) throw new Error(responseRegExp);
-        let update = await fetch(
-          PUT,
-          art.id,
-          artname || art.artname,
-          contact || art.contact,
-          gmail || art.email,
-          password ? sha256(password) : art.password,
-          avatar || art.avatar,
-          profession || art.profession,
-          gender || art.gender
-        );
-        res.send({
-          status: 200,
-          data: update,
-          message: "Article " + art.id + " updated!",
-        });
-      } else
-        throw new Error("You don't have permission! Sizga ruxsat berilmagan!");
+
+      if (title?.length > 255)
+        throw new Error("Title very longer! Sarlavha uzun berilgan!");
+
+      let update = await fetch(
+        PUT,
+        art.id,
+        title || art.title,
+        description || art.description,
+        image || art.image
+      );
+      res.send({
+        status: 200,
+        data: update,
+        message: "Article " + art.id + " updated!",
+      });
     } catch (err) {
       res.send({
         status: 404,
@@ -153,33 +167,21 @@ const ArticleConter = {
   },
   DELETE: async (req, res, next) => {
     try {
-      let art = await fetch(GET, req.art.id);
+      const { id } = req?.params;
+      if (!id)
+        throw new Error(
+          "You need send article's id for delete! O'chirish uchun maqolaning raqamini jo'nating"
+        );
+      let art = await fetch(GET, id);
       if (!art)
-        throw new Error("You are not registered! Siz ro'yxatdan o'tmagansiz!");
-      if (art.role == "admin") {
-        let artId = req.params.id;
-        if (artId) {
-          let findart = await fetch(GET, artId);
-          if (!findart) throw new Error("Not found art = " + artId);
-          let delart = await fetch(DELETE, artId);
-          res.send({
-            status: 200,
-            data: delart,
-            message: "Article " + artId + " deleted!",
-          });
-        } else
-          throw new Error(
-            "Send id who to delete! Kimni o'chirish kerak id jo'nating!"
-          );
-      } else {
-        fs.unlinkSync(path.join(process.cwd(), "avatarka", art.avatar));
-        let deleteart = await fetch(DELETE, art.id);
-        res.send({
-          status: 200,
-          data: deleteart,
-          message: "Article " + art.id + " deleted!",
-        });
-      }
+        throw new Error(`Not found article = ${id}! ${id} - maqola topilmadi`);
+      fs.unlinkSync(path.join(process.cwd(), "avatarka", art.image));
+      let deleteart = await fetch(DELETE, id);
+      res.send({
+        status: 200,
+        data: deleteart,
+        message: "Article " + id + " deleted!",
+      });
     } catch (err) {
       res.send({
         status: 404,
