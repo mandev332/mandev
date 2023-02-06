@@ -13,7 +13,8 @@ const auth = {
       if (jwt.VERIFY(token) instanceof Error)
         throw new Error("You are not registered! Siz ro'yxatdan o'tmagansiz!");
       const user = jwt.VERIFY(token);
-      req.user = user;
+
+      req.user = await fetch(userModel.GET, user.id);
       return next();
     } catch (error) {
       res.send({
@@ -213,6 +214,7 @@ const auth = {
       });
     }
   },
+  ADMIN: async (req, res, next) => {},
 };
 
 export { auth };

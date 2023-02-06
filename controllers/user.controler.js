@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import sha256 from "sha256";
-import { jwt } from "./jwt.js";
+import { jwt } from "../middlewares/jwt.js";
 import { fetch, fetchAll } from "../database/connect.js";
 import { userModel } from "../MODELS/userModel.js";
 const { GET, GETALL, PUT, DELETE } = userModel;

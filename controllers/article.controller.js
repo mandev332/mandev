@@ -3,6 +3,7 @@ import path from "path";
 import { fetch, fetchAll } from "../database/connect.js";
 import { userModel } from "../MODELS/userModel.js";
 import { articleModel } from "../MODELS/articleModel.js";
+
 const { GET, GETUSER, GETALL, POST, PUT, DELETE } = articleModel;
 
 const ArticleConter = {
@@ -84,18 +85,25 @@ const ArticleConter = {
   UPLOAD: async (req, res, next) => {
     try {
       if (!req?.files?.file && req.method == "PUT") return next();
-      let cod = (Math.random() * 900000 + 100000).toFixed(0);
-      let art;
-      req.body.image = null;
       const file = req?.files?.file;
       if (!file) return next();
-      if (req.method == "PUT" && req?.params.id) {
+
+      let cod = (Math.random() * 900000 + 100000).toFixed(0);
+      let art;
+
+      if (req.method == "PUT") {
+        const { id } = req?.user;
         art = await fetch(GET, req.params.id);
+        if (!art)
+          throw new Error("This article not found! Bu maqola topilmadi!");
+        if (art.user_id != id)
+          throw new Error(`This article in not yours! Bu maqola sizniki emas!`);
+        if (art?.image) {
+          fs.unlinkSync(path.join(process.cwd(), "avatarka", art.image));
+        }
       }
+
       let filePath = path.join(process.cwd(), "avatarka", "sites", cod);
-      if (art?.image) {
-        fs.unlinkSync(path.join(process.cwd(), "avatarka", art.image));
-      }
       let type = file.mimetype.split("/")[1];
       req.body.image = "/sites/" + cod + "." + type;
       await file.mv(filePath + "." + type);
@@ -127,15 +135,17 @@ const ArticleConter = {
       res.send({
         status: 404,
         data: null,
-        message: err.message,
+        message: error.message,
       });
     }
   },
   PUT: async (req, res, next) => {
     try {
+      const { id } = req?.user;
       let art = await fetch(GET, req.params.id);
       if (!art) throw new Error("This article not found! Bu maqola topilmadi!");
-
+      if (art.user_id != id)
+        throw new Error(`This article in not yours! Bu maqola sizniki emas!`);
       const { title, description, image } = req.body;
       if (!title && !description && !image)
         throw new Error(
@@ -167,7 +177,9 @@ const ArticleConter = {
   },
   DELETE: async (req, res, next) => {
     try {
+      const userId = req?.user.id;
       const { id } = req?.params;
+
       if (!id)
         throw new Error(
           "You need send article's id for delete! O'chirish uchun maqolaning raqamini jo'nating"
@@ -175,7 +187,10 @@ const ArticleConter = {
       let art = await fetch(GET, id);
       if (!art)
         throw new Error(`Not found article = ${id}! ${id} - maqola topilmadi`);
-      fs.unlinkSync(path.join(process.cwd(), "avatarka", art.image));
+      if (art.user_id != userId)
+        throw new Error(`This article in not yours! Bu maqola sizniki emas!`);
+      if (art.image != "/sites/demo.jpg")
+        fs.unlinkSync(path.join(process.cwd(), "avatarka", art.image));
       let deleteart = await fetch(DELETE, id);
       res.send({
         status: 200,
@@ -190,6 +205,7 @@ const ArticleConter = {
       });
     }
   },
+  SEND: async (req, res) => {},
 };
 
 export default ArticleConter;

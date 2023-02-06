@@ -19,13 +19,12 @@ const jwt = {
     let phoneRegex = new RegExp("^(9[012345789]|88|33)[0-9]{7}$");
     let passRegex = new RegExp("^[a-zA-Z0-9]{4,10}$");
     let proRegex = new RegExp("^[a-zA-Z0-9\\s\\+\\#\\&\\*\\(\\)]{1,32}$");
-    if (!nameRegex.test(username)) return "Wrong username!";
-    if (!phoneRegex.test(contact)) return "Wrong contact!";
-    if (!passRegex.test(password)) return "Wrong pass!";
-    if (!proRegex.test(profession)) return "Wrong profession!";
-    if (!["male", "female"].includes(gender)) return "Wrong gender!";
+    if (!nameRegex.test(username || "salom")) return "Wrong name!";
+    if (!phoneRegex.test(contact || "985632589")) return "Wrong contact!";
+    if (!passRegex.test(password || "salom123")) return "Wrong password!";
+    if (!proRegex.test(profession || "nodeJs")) return "Wrong profession!";
+    if (!["male", "female"].includes(gender || "male")) return "Wrong gender!";
     return 1;
   },
 };
-
 export { jwt };
