@@ -52,7 +52,7 @@ const ArticleConter = {
   GETUSER: async (req, res, next) => {
     try {
       const { id } = req?.user;
-      if (user) {
+      if (id) {
         let artId = req?.params.id;
         if (artId) {
           let findart = await fetch(GETUser, id, artId);
@@ -70,7 +70,7 @@ const ArticleConter = {
             message: "Article",
           });
         } else {
-          let arts = await fetchAll(GETUSER, user.id);
+          let arts = await fetchAll(GETUSER, id);
           if (arts.length)
             res.send({
               status: 200,
