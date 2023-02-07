@@ -13,7 +13,7 @@ const SiteConter = {
       if (id) {
         let findkesh = await fetch(GET, id);
         if (!findkesh)
-          throw new Error(`Not found kesh = ${id}!, ${id} - sayt topilmadi!`);
+          throw new Error(`Not found xabar = ${id}!, ${id} - xabar topilmadi!`);
         res.send({
           status: 200,
           data: findkesh,

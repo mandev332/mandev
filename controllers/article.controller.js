@@ -4,7 +4,17 @@ import { fetch, fetchAll } from "../database/connect.js";
 import { userModel } from "../MODELS/userModel.js";
 import { articleModel } from "../MODELS/articleModel.js";
 
-const { GET, GETUSER, GETALL, POST, PUT, DELETE } = articleModel;
+const {
+  GET,
+  GETUSER,
+  GETUser,
+  GETALL,
+  POST,
+  ADMINPOST,
+  PUT,
+  ADMINPUT,
+  DELETE,
+} = articleModel;
 
 const ArticleConter = {
   GET: async (req, res, next) => {
@@ -42,11 +52,10 @@ const ArticleConter = {
   GETUSER: async (req, res, next) => {
     try {
       const { id } = req?.user;
-      let user = await fetch(userModel.GET, id);
       if (user) {
         let artId = req?.params.id;
         if (artId) {
-          let findart = await fetch(GET, artId);
+          let findart = await fetch(GETUser, id, artId);
           if (!findart)
             throw new Error(
               `Not found art = ${artId}! ${artId} - maqola topilmadi!`
@@ -119,12 +128,25 @@ const ArticleConter = {
   POST: async (req, res, next) => {
     try {
       const { id } = req?.user;
-      const { title, description, image } = req.body;
-      if (!title || !description)
+      const { title, description, image, hashtag } = req.body;
+      if (!title || !description || !hashtag)
         throw new Error(
-          "You must send title and description! Siz mavzu va maqola yuborishingiz zarur!"
+          "You must send title and description! Siz surat, mavzu, maqola va hashtag yuborishingiz zarur!"
         );
-      let post = await fetch(POST, id, title, description, image);
+      let post;
+      if (req.user.role == "admin") {
+        post = await fetch(
+          ADMINPOST,
+          id,
+          title,
+          description,
+          image,
+          hashtag,
+          true
+        );
+      } else {
+        post = await fetch(POST, id, title, description, image, hashtag);
+      }
 
       res.send({
         status: 200,
@@ -146,8 +168,8 @@ const ArticleConter = {
       if (!art) throw new Error("This article not found! Bu maqola topilmadi!");
       if (art.user_id != id)
         throw new Error(`This article in not yours! Bu maqola sizniki emas!`);
-      const { title, description, image } = req.body;
-      if (!title && !description && !image)
+      const { title, description, image, hashtag } = req.body;
+      if (!title && !description && !image && !hashtag)
         throw new Error(
           "You need send sameone date for change! O'zgarish uchun bironta ma'lumot yuborishingiz zarur!"
         );
@@ -160,7 +182,8 @@ const ArticleConter = {
         art.id,
         title || art.title,
         description || art.description,
-        image || art.image
+        image || art.image,
+        hashtag || art.hashtag
       );
       res.send({
         status: 200,
@@ -175,6 +198,46 @@ const ArticleConter = {
       });
     }
   },
+
+  ADMINPUT: async (req, res, next) => {
+    try {
+      const { role } = req?.user;
+      if (role != "admin")
+        throw new Error("You are not allowed! Sizga ruxsat berilmagan!");
+      let art = await fetch(GET, req.params.id);
+      if (!art) throw new Error("This article not found! Bu maqola topilmadi!");
+      const { title, description, image, hashtag, permission } = req.body;
+      if (!title && !description && !image && !hashtag && !permission)
+        throw new Error(
+          "You need send sameone date for change! O'zgarish uchun bironta ma'lumot yuborishingiz zarur!"
+        );
+
+      if (title?.length > 255)
+        throw new Error("Title very longer! Sarlavha uzun berilgan!");
+
+      let update = await fetch(
+        PUT,
+        art.id,
+        title || art.title,
+        description || art.description,
+        image || art.image,
+        hashtag || art.hashtag,
+        permission || art.permission
+      );
+      res.send({
+        status: 200,
+        data: update,
+        message: "Article " + art.id + " updated!",
+      });
+    } catch (err) {
+      res.send({
+        status: 404,
+        data: null,
+        message: err.message,
+      });
+    }
+  },
+
   DELETE: async (req, res, next) => {
     try {
       const userId = req?.user.id;
@@ -187,7 +250,7 @@ const ArticleConter = {
       let art = await fetch(GET, id);
       if (!art)
         throw new Error(`Not found article = ${id}! ${id} - maqola topilmadi`);
-      if (art.user_id != userId)
+      if (art.user_id != userId && req.user.role != "admin")
         throw new Error(`This article in not yours! Bu maqola sizniki emas!`);
       if (art.image != "/sites/demo.jpg")
         fs.unlinkSync(path.join(process.cwd(), "avatarka", art.image));

@@ -11,6 +11,7 @@ articleRouter
   .get("/send/:id", art.GET)
   .post("/", auth.TOKEN, art.UPLOAD, art.POST)
   .put("/:id", auth.TOKEN, art.UPLOAD, art.PUT)
+  .put("/admin/:id", auth.TOKEN, art.UPLOAD, art.ADMINPUT)
   .delete("/:id", auth.TOKEN, art.DELETE);
 
 export default articleRouter;
