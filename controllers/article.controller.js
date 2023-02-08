@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import { fetch, fetchAll } from "../database/connect.js";
-import { userModel } from "../MODELS/userModel.js";
 import { articleModel } from "../MODELS/articleModel.js";
 
 const {
@@ -112,9 +111,9 @@ const ArticleConter = {
         }
       }
 
-      let filePath = path.join(process.cwd(), "avatarka", "sites", cod);
+      let filePath = path.join(process.cwd(), "avatarka", "article", cod);
       let type = file.mimetype.split("/")[1];
-      req.body.image = "/sites/" + cod + "." + type;
+      req.body.image = "/artilcle/" + cod + "." + type;
       await file.mv(filePath + "." + type);
       return next();
     } catch (error) {
@@ -188,7 +187,7 @@ const ArticleConter = {
       res.send({
         status: 200,
         data: update,
-        message: "Article " + art.id + " updated!",
+        message: `Article ${art.id} updated! ${art.id} Maqola o'zgartirildi!`,
       });
     } catch (err) {
       res.send({
@@ -216,7 +215,7 @@ const ArticleConter = {
         throw new Error("Title very longer! Sarlavha uzun berilgan!");
 
       let update = await fetch(
-        PUT,
+        ADMINPUT,
         art.id,
         title || art.title,
         description || art.description,
@@ -227,7 +226,7 @@ const ArticleConter = {
       res.send({
         status: 200,
         data: update,
-        message: "Article " + art.id + " updated!",
+        message: `Article ${art.id} updated! ${art.id} Maqola o'zgartirildi!`,
       });
     } catch (err) {
       res.send({
@@ -242,7 +241,7 @@ const ArticleConter = {
     try {
       const userId = req?.user.id;
       const { id } = req?.params;
-
+      console.log(id);
       if (!id)
         throw new Error(
           "You need send article's id for delete! O'chirish uchun maqolaning raqamini jo'nating"
@@ -258,7 +257,7 @@ const ArticleConter = {
       res.send({
         status: 200,
         data: deleteart,
-        message: "Article " + id + " deleted!",
+        message: `Article ${id} updated! ${id} Maqola o'zgartirildi!`,
       });
     } catch (err) {
       res.send({

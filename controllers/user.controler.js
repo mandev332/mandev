@@ -33,13 +33,13 @@ const UserConter = {
               data: users,
               message: "Users",
             });
-          else throw new Error("Users not found");
+          else throw new Error("Users not found! Foydalanuvchilar topilmadi!");
         }
       } else if (user.role == "user")
         res.send({
           status: 200,
           data: user,
-          message: "User = " + id,
+          message: `User = ${id}! ${id} - foydalanuvchi`,
         });
 
       if (!user)

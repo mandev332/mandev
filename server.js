@@ -10,13 +10,14 @@ import notPath from "./routers/notpath.routes.js";
 const app = express();
 const PORT = process.env.PORT || 5050;
 app.use(cors({ origin: "*" }));
+
 app.use(express.json());
-app.use(express.static(path.join(process.cwd(), "avatarka")));
 app.use(fileupload({ limits: { fileSize: 10 * 1024 * 1024 } }));
-app.use(userRouter);
+app.use("/avatarka", express.static(path.join(process.cwd(), "avatarka")));
 app.use("/articles", articleRouter);
 app.use("/sites", siteRouter);
 app.use("/message", keshRouter);
+app.use(userRouter);
 app.use(notPath);
 app.listen(PORT);
 console.log("Connection:!", "http://localhost:" + PORT);
