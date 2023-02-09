@@ -113,7 +113,7 @@ const ArticleConter = {
 
       let filePath = path.join(process.cwd(), "avatarka", "article", cod);
       let type = file.mimetype.split("/")[1];
-      req.body.image = "/artilcle/" + cod + "." + type;
+      req.body.image = "/avatarka/artilcle/" + cod + "." + type;
       await file.mv(filePath + "." + type);
       return next();
     } catch (error) {

@@ -161,7 +161,7 @@ const auth = {
         fs.unlinkSync(path.join(process.cwd(), "avatarka", user.avatar));
       }
       let type = file.mimetype.split("/")[1];
-      avatar = "/users/" + (contact || user.contact) + "." + type;
+      avatar = "/avatarka/users/" + (contact || user.contact) + "." + type;
       await file.mv(filePath + "." + type);
       req.body.avatar = avatar;
 

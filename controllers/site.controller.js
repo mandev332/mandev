@@ -58,7 +58,7 @@ const SiteConter = {
         let image = `sites/${cod + type}`;
 
         downloadImage(imagelink, image);
-        req.body.image = "/" + (image || "sites/getter.png");
+        req.body.image = "/avatarka/" + (image || "sites/getter.png");
       }
       return next();
     } catch (error) {
