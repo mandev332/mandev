@@ -69,7 +69,7 @@ const UserConter = {
 
         if (contact && !avatar) {
           fs.renameSync(
-            path.join(process.cwd(), "avatarka", user.avatar),
+            path.join(process.cwd(), user.avatar),
             path.join(
               process.cwd(),
               "avatarka",
@@ -77,7 +77,7 @@ const UserConter = {
               contact + "." + user.avatar.split(".")[1]
             )
           );
-          avatar = `/users/${contact}.${user.avatar.split(".")[1]}`;
+          avatar = `/avatarka/users/${contact}.${user.avatar.split(".")[1]}`;
         }
 
         if (

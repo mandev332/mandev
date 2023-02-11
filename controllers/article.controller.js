@@ -11,6 +11,8 @@ const {
   POST,
   ADMINPOST,
   PUT,
+  LIKE,
+  VIEW,
   ADMINPUT,
   DELETE,
 } = articleModel;
@@ -107,7 +109,7 @@ const ArticleConter = {
         if (art.user_id != id)
           throw new Error(`This article in not yours! Bu maqola sizniki emas!`);
         if (art?.image) {
-          fs.unlinkSync(path.join(process.cwd(), "avatarka", art.image));
+          fs.unlinkSync(path.join(process.cwd(), art.image));
         }
       }
 
@@ -205,8 +207,8 @@ const ArticleConter = {
         throw new Error("You are not allowed! Sizga ruxsat berilmagan!");
       let art = await fetch(GET, req.params.id);
       if (!art) throw new Error("This article not found! Bu maqola topilmadi!");
-      const { title, description, image, hashtag, permission } = req.body;
-      if (!title && !description && !image && !hashtag && !permission)
+      const { permission } = req.body;
+      if (!permission)
         throw new Error(
           "You need send sameone date for change! O'zgarish uchun bironta ma'lumot yuborishingiz zarur!"
         );
@@ -217,11 +219,8 @@ const ArticleConter = {
       let update = await fetch(
         ADMINPUT,
         art.id,
-        title || art.title,
-        description || art.description,
-        image || art.image,
-        hashtag || art.hashtag,
-        permission || art.permission
+        permission || art.permission,
+        new Date().toDateString()
       );
       res.send({
         status: 200,
@@ -267,7 +266,44 @@ const ArticleConter = {
       });
     }
   },
-  SEND: async (req, res) => {},
+  LIKE: async (req, res) => {
+    try {
+      let { id } = req.params;
+      if (isNaN(+id))
+        throw new Error("Send number for id! id uchun raqam yuboring! ");
+      await fetch(LIKE, id);
+      res.send({
+        status: 200,
+        data: null,
+        message: "ok",
+      });
+    } catch (error) {
+      res.send({
+        status: 400,
+        data: null,
+        message: error.message,
+      });
+    }
+  },
+  VIEW: async (req, res) => {
+    try {
+      let { id } = req.params;
+      if (isNaN(+id))
+        throw new Error("Send number for id! id uchun raqam yuboring! ");
+      await fetch(VIEW, id);
+      res.send({
+        status: 200,
+        data: null,
+        message: "ok",
+      });
+    } catch (error) {
+      res.send({
+        status: 400,
+        data: null,
+        message: error.message,
+      });
+    }
+  },
 };
 
 export default ArticleConter;

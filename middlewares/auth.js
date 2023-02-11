@@ -156,9 +156,11 @@ const auth = {
       );
       if (
         user?.avatar &&
-        !["/users/boy.jpg", "/users/girl.jpg"].includes(user.avatar)
+        !["/avatarka/users/boy.jpg", "/avatarka/users/girl.jpg"].includes(
+          user.avatar
+        )
       ) {
-        fs.unlinkSync(path.join(process.cwd(), "avatarka", user.avatar));
+        fs.unlinkSync(path.join(process.cwd(), user.avatar));
       }
       let type = file.mimetype.split("/")[1];
       avatar = "/avatarka/users/" + (contact || user.contact) + "." + type;

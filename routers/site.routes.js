@@ -8,6 +8,7 @@ siteRouter
   .get("/", site.GET)
   .post("/", auth.TOKEN, site.UPLOAD, site.POST)
   .put("/:id", auth.TOKEN, site.UPLOAD, site.PUT)
+  .put("/like/:id", site.LIKE)
   .delete("/:id", auth.TOKEN, site.DELETE);
 
 export default siteRouter;
