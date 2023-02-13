@@ -10,7 +10,7 @@ export const articleModel = {
         FROM articles as a \
         INNER JOIN users as u ON (a.user_id = u.id)\
         INNER JOIN comments as c ON (a.id = c.art_id)\
-        where a.permission = true and id = $1\
+        where a.permission = true and a.id = $1\
         GROUP BY a.id , u.username, u.avatar,u.profession,u.id",
   GETUSER: "SELECT * FROM articles where user_id = $1",
   GETUser: "SELECT * FROM articles where user_id = $1 and id = $2",
