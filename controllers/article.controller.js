@@ -13,6 +13,7 @@ const {
   PUT,
   LIKE,
   VIEW,
+  ADMINGET,
   ADMINPUT,
   DELETE,
 } = articleModel;
@@ -141,7 +142,7 @@ const ArticleConter = {
           id,
           title,
           description,
-          image,
+          image || "/avatarka/article/demo.jpg",
           hashtag,
           true
         );
@@ -205,16 +206,13 @@ const ArticleConter = {
       const { role } = req?.user;
       if (role != "admin")
         throw new Error("You are not allowed! Sizga ruxsat berilmagan!");
-      let art = await fetch(GET, req.params.id);
+      let art = await fetch(ADMINGET, req.params.id);
       if (!art) throw new Error("This article not found! Bu maqola topilmadi!");
       const { permission } = req.body;
       if (!permission)
         throw new Error(
           "You need send sameone date for change! O'zgarish uchun bironta ma'lumot yuborishingiz zarur!"
         );
-
-      if (title?.length > 255)
-        throw new Error("Title very longer! Sarlavha uzun berilgan!");
 
       let update = await fetch(
         ADMINPUT,
@@ -240,7 +238,6 @@ const ArticleConter = {
     try {
       const userId = req?.user.id;
       const { id } = req?.params;
-      console.log(id);
       if (!id)
         throw new Error(
           "You need send article's id for delete! O'chirish uchun maqolaning raqamini jo'nating"
@@ -250,13 +247,13 @@ const ArticleConter = {
         throw new Error(`Not found article = ${id}! ${id} - maqola topilmadi`);
       if (art.user_id != userId && req.user.role != "admin")
         throw new Error(`This article in not yours! Bu maqola sizniki emas!`);
-      if (art.image != "/sites/demo.jpg")
-        fs.unlinkSync(path.join(process.cwd(), "avatarka", art.image));
+      if (art.image != "avatarka/sites/demo.jpg")
+        fs.unlinkSync(path.join(process.cwd(), art.image));
       let deleteart = await fetch(DELETE, id);
       res.send({
         status: 200,
         data: deleteart,
-        message: `Article ${id} updated! ${id} Maqola o'zgartirildi!`,
+        message: `Article ${id} deleted! ${id} Maqola o'chirildi!`,
       });
     } catch (err) {
       res.send({
