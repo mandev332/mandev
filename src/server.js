@@ -16,7 +16,10 @@ app.use(cors("*"));
 app.use(express.json());
 app.use(fileupload({ limits: { fileSize: 10 * 1024 * 1024 } }));
 app.use(swagger);
-app.use("/avatarka", express.static(path.join(process.cwd(), "avatarka")));
+app.use(
+    "/avatarka",
+    express.static(path.join(process.cwd(), "src", "avatarka"))
+);
 app.use("/articles", articleRouter);
 app.use("/sites", siteRouter);
 app.use("/message", keshRouter);

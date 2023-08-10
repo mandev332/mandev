@@ -117,11 +117,17 @@ const ArticleConter = {
                         `This article in not yours! Bu maqola sizniki emas!`
                     );
                 if (art?.image) {
-                    fs.unlinkSync(path.join(process.cwd(), art.image));
+                    fs.unlinkSync(path.join(process.cwd(), "src", art.image));
                 }
             }
 
-            let filePath = path.join(process.cwd(), "avatarka", "article", cod);
+            let filePath = path.join(
+                process.cwd(),
+                "src",
+                "avatarka",
+                "article",
+                cod
+            );
             let type = file.mimetype.split("/")[1];
             req.body.image = "/avatarka/artilcle/" + cod + "." + type;
             await file.mv(filePath + "." + type);
@@ -272,7 +278,7 @@ const ArticleConter = {
                     `This article in not yours! Bu maqola sizniki emas!`
                 );
             if (art.image != "avatarka/sites/demo.jpg")
-                fs.unlinkSync(path.join(process.cwd(), art.image));
+                fs.unlinkSync(path.join(process.cwd(), "src", art.image));
             let deleteart = await fetch(DELETE, id);
             res.send({
                 status: 200,

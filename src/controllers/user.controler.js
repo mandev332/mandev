@@ -79,9 +79,10 @@ const UserConter = {
 
                 if (contact && !avatar) {
                     fs.renameSync(
-                        path.join(process.cwd(), user.avatar),
+                        path.join(process.cwd(), "src", user.avatar),
                         path.join(
                             process.cwd(),
+                            "src",
                             "avatarka",
                             "users",
                             contact + "." + user.avatar.split(".")[1]
@@ -204,7 +205,7 @@ const UserConter = {
                     );
             } else {
                 fs.unlinkSync(
-                    path.join(process.cwd(), "avatarka", user.avatar)
+                    path.join(process.cwd(), "src", "avatarka", user.avatar)
                 );
                 let deleteuser = await fetch(DELETE, user.id);
                 res.send({

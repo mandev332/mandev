@@ -95,11 +95,13 @@ const auth = {
                     });
                 let userKesh = { gmail, password, cod, date: new Date() };
                 const kesh = JSON.parse(
-                    fs.readFileSync(path.join(process.cwd(), "kesh.json"))
+                    fs.readFileSync(
+                        path.join(process.cwd(), "src", "kesh.json")
+                    )
                 );
                 kesh.push(userKesh);
                 fs.writeFileSync(
-                    path.join(process.cwd(), "kesh.json"),
+                    path.join(process.cwd(), "src", "kesh.json"),
                     JSON.stringify(kesh, null, 4)
                 );
             });
@@ -116,7 +118,7 @@ const auth = {
         try {
             const { checkPass } = req.body;
             let userKesh = JSON.parse(
-                fs.readFileSync(path.join(process.cwd(), "kesh.json"))
+                fs.readFileSync(path.join(process.cwd(), "src", "kesh.json"))
             );
             let userPass = userKesh.find((e) => e.cod == checkPass);
 
@@ -159,6 +161,7 @@ const auth = {
 
             let filePath = path.join(
                 process.cwd(),
+                "src",
                 "avatarka",
                 "users",
                 contact || user.contact
@@ -170,7 +173,7 @@ const auth = {
                     "/avatarka/users/girl.jpg",
                 ].includes(user.avatar)
             ) {
-                fs.unlinkSync(path.join(process.cwd(), user.avatar));
+                fs.unlinkSync(path.join(process.cwd(), "src", user.avatar));
             }
             let type = file.mimetype.split("/")[1];
             avatar =

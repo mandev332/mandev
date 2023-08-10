@@ -51,7 +51,7 @@ const SiteConter = {
                 if (!site)
                     throw new Error("This site not found! Bu sayt topilmadi!");
                 if (site?.image) {
-                    fs.unlinkSync(path.join(process.cwd(), site.image));
+                    fs.unlinkSync(path.join(process.cwd(), "src", site.image));
                 }
             }
 
@@ -59,7 +59,9 @@ const SiteConter = {
                 let type = file.mimetype.split("/")[1];
                 let cod = (Math.random() * 900000 + 100000).toFixed(0);
                 let image = `sites/${cod + "." + type}`;
-                await file.mv(path.join(process.cwd(), "avatarka", image));
+                await file.mv(
+                    path.join(process.cwd(), "src", "avatarka", image)
+                );
 
                 // downloadImage(imagelink, image);
                 req.body.image = "/avatarka/" + (image || "sites/getter.png");
@@ -168,7 +170,9 @@ const SiteConter = {
                     `Not found site = ${id}! ${id} - sayt topilmadi`
                 );
             if (site.image)
-                fs.unlinkSync(path.join(process.cwd(), "avatarka", site.image));
+                fs.unlinkSync(
+                    path.join(process.cwd(), "src", "avatarka", site.image)
+                );
             let deletesite = await fetch(DELETE, id);
             res.send({
                 status: 200,

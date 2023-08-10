@@ -11,7 +11,13 @@ const file = {
                 );
             let cod = (Math.random() * 900000 + 100000).toFixed(0);
 
-            let filePath = path.join(process.cwd(), "avatarka", "files", cod);
+            let filePath = path.join(
+                process.cwd(),
+                "src",
+                "avatarka",
+                "files",
+                cod
+            );
             let type = file.mimetype.split("/")[1];
             let image = "/avatarka/files/" + cod + "." + type;
             await file.mv(filePath + "." + type);
