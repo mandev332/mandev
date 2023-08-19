@@ -1,193 +1,193 @@
 # path:
 /users:
-    get:
-        tags:
-            - userlar
-        summary: Userlar haqidagi ma'lumotlar olish
-        description: Bu yerdan Userlarni ma'lumotlarini olasiz
-        responses:
-            200:
-                description: Hamma userlar
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseUserArray"
-            400:
-                description: Error Server
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-/users/{id}:
-    get:
-        tags:
-            - userlar
-        summary: User haqidagi ma'lumotlar olish
-        description: Bu yerdan Userni ma'lumotlarini olasiz
-        parameters:
-            - name: id
-              in: path
-              description: kerak bo'lgan userning id raqamini kiriting
-              required: true
-        responses:
-            200:
-                description: So'ralgan user
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseUser"
-            400:
-                description: Error Server
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-    put:
-        tags:
-            - userlar
-        summary: Userni o'zgartirish
-        description: Bu yerdan Userni ma'lumotlarini o'zgartirasiz
-        parameters:
-            - name: id
-              in: path
-              description: o'zgartirmoqchi bo'lgan userning id raqamini kiriting
-              required: true
-        requestBody:
-            description: Qaysi qatorni o'zgartirish kerak bo'lsa shu qatorni to'ldiring
-            content:
-                multipart/formdata:
-                    schema:
-                        $ref: "#/components/schemas/PostUser"
-        responses:
-            200:
-                description: O'zgargan user
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseUser"
-            400:
-                description: Error Server
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-    delete:
-        tags:
-            - userlar
-        summary: Userni o'chirish
-        description: Userni o'chirish bo'limi
-        parameters:
-            - name: id
-              in: path
-              description: userning id raqamini kiriting
-              required: true
-        responses:
-            201:
-                description: user o'chirildi
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseUser"
-            429:
-                description: Bad Request
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-/users/admin/{id}:
-    put:
-        tags:
-            - userlar
-        summary: Userning rolini o'zgartirish
-        description: Bu yerdan Userni rolini o'zgartirasiz
-        parameters:
-            - name: id
-              in: path
-              description: o'zgartirmoqchi bo'lgan userning id raqamini kiriting
-              required: true
-        requestBody:
-            description: role tayinlang
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            role:
-                                type: string
-        responses:
-            200:
-                description: O'zgargan user
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseMessage"
-            400:
-                description: Error Server
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-components:
-    schemas:
-        User:
-            type: object
-            properties:
-                id:
-                    type: integer
-                    example: 15
-                username:
-                    type: string
-                contact:
-                    type: string
-                email:
-                    type: string
-                password:
-                    type: string
-                avatar:
-                    type: string
-                profession:
-                    type: string
-                role:
-                    type: string
-                gender:
-                    type: string
-        PostUser:
-            type: object
-            properties:
-                username:
-                    type: string
-                contact:
-                    type: string
-                email:
-                    type: string
-                password:
-                    type: string
-                avatar:
-                    type: string
-                    format: binary
-                profession:
-                    type: string
-                gender:
-                    type: string
-        ResponseUserArray:
-            type: object
-            properties:
-                status:
-                    type: integer
-                    example: 200
-                data:
-                    type: array
-                    items:
-                        $ref: "#/components/schemas/User"
-                message:
-                    type: string
-        ResponseUser:
-            type: object
-            properties:
-                status:
-                    type: integer
-                    example: 200
-                data:
-                    $ref: "#/components/schemas/User"
-                message:
-                    type: string
+  get:
+    tags:
+      - userlar
+    summary: Userlar haqidagi ma'lumotlar olish
+    description: Bu yerdan Userlarni ma'lumotlarini olasiz
+    responses:
+      200:
+        description: Hamma userlar
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseUserArray"
+      400:
+        description: Error Server
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
+# /users/{id}:
+#   get:
+#     tags:
+#       - userlar
+#     summary: User haqidagi ma'lumotlar olish
+#     description: Bu yerdan Userni ma'lumotlarini olasiz
+#     parameters:
+#       - name: id
+#         in: path
+#         description: kerak bo'lgan userning id raqamini kiriting
+#         required: true
+#     responses:
+#       200:
+#         description: So'ralgan user
+#         content:
+#           application/json:
+#             schema:
+#               $ref: "#/components/schemas/ResponseUser"
+#       400:
+#         description: Error Server
+#         content:
+#           application/json:
+#             schema:
+#               $ref: "#/components/schemas/ResponseError"
+#   put:
+#     tags:
+#       - userlar
+#     summary: Userni o'zgartirish
+#     description: Bu yerdan Userni ma'lumotlarini o'zgartirasiz
+#     parameters:
+#       - name: id
+#         in: path
+#         description: o'zgartirmoqchi bo'lgan userning id raqamini kiriting
+#         required: true
+#     requestBody:
+#       description: Qaysi qatorni o'zgartirish kerak bo'lsa shu qatorni to'ldiring
+#       content:
+#         multipart/formdata:
+#           schema:
+#             $ref: "#/components/schemas/PostUser"
+#     responses:
+#       200:
+#         description: O'zgargan user
+#         content:
+#           application/json:
+#             schema:
+#               $ref: "#/components/schemas/ResponseUser"
+#       400:
+#         description: Error Server
+#         content:
+#           application/json:
+#             schema:
+#               $ref: "#/components/schemas/ResponseError"
+#   delete:
+#     tags:
+#       - userlar
+#     summary: Userni o'chirish
+#     description: Userni o'chirish bo'limi
+#     parameters:
+#       - name: id
+#         in: path
+#         description: userning id raqamini kiriting
+#         required: true
+#     responses:
+#       201:
+#         description: user o'chirildi
+#         content:
+#           application/json:
+#             schema:
+#               $ref: "#/components/schemas/ResponseUser"
+#       429:
+#         description: Bad Request
+#         content:
+#           application/json:
+#             schema:
+#               $ref: "#/components/schemas/ResponseError"
+# /users/admin/{id}:
+#   put:
+#     tags:
+#       - userlar
+#     summary: Userning rolini o'zgartirish
+#     description: Bu yerdan Userni rolini o'zgartirasiz
+#     parameters:
+#       - name: id
+#         in: path
+#         description: o'zgartirmoqchi bo'lgan userning id raqamini kiriting
+#         required: true
+#     requestBody:
+#       description: role tayinlang
+#       content:
+#         application/json:
+#           schema:
+#             type: object
+#             properties:
+#               role:
+#                 type: string
+#     responses:
+#       200:
+#         description: O'zgargan user
+#         content:
+#           application/json:
+#             schema:
+#               $ref: "#/components/schemas/ResponseMessage"
+#       400:
+#         description: Error Server
+#         content:
+#           application/json:
+#             schema:
+#               $ref: "#/components/schemas/ResponseError"
+# components:
+#   schemas:
+#     User:
+#       type: object
+#       properties:
+#         id:
+#           type: integer
+#           example: 15
+#         username:
+#           type: string
+#         contact:
+#           type: string
+#         email:
+#           type: string
+#         password:
+#           type: string
+#         avatar:
+#           type: string
+#         profession:
+#           type: string
+#         role:
+#           type: string
+#         gender:
+#           type: string
+#     PostUser:
+#       type: object
+#       properties:
+#         username:
+#           type: string
+#         contact:
+#           type: string
+#         email:
+#           type: string
+#         password:
+#           type: string
+#         avatar:
+#           type: string
+#           format: binary
+#         profession:
+#           type: string
+#         gender:
+#           type: string
+#     ResponseUserArray:
+#       type: object
+#       properties:
+#         status:
+#           type: integer
+#           example: 200
+#         data:
+#           type: array
+#           items:
+#             $ref: "#/components/schemas/User"
+#         message:
+#           type: string
+#     ResponseUser:
+#       type: object
+#       properties:
+#         status:
+#           type: integer
+#           example: 200
+#         data:
+#           $ref: "#/components/schemas/User"
+#         message:
+#           type: string

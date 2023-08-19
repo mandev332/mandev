@@ -1,197 +1,197 @@
 # path:
 /articles:
-    get:
-        tags:
-            - maqolalar
-        summary: Maqolalar
-        description: Articles
-        responses:
-            200:
-                description: Result Articles
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                status:
-                                    type: number
-                                data:
-                                    type: array
-                                    items:
-                                        $ref: "#/components/schemas/ArticleUser"
-                                message:
-                                    type: string
-            400:
-                description: Error Server
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
+  get:
+    tags:
+      - maqolalar
+    summary: Maqolalar
+    description: Articles
+    responses:
+      200:
+        description: Result Articles
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: number
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ArticleUser"
+                message:
+                  type: string
+      400:
+        description: Error Server
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
 
-    post:
-        tags:
-            - maqolalar
-        summary: Maqolalar
-        description: Articles
-        requestBody:
-            description: Add Article
-            content:
-                application/json:
-                    schema:
-                        $ref: "#/components/schemas/PostArticle"
-        responses:
-            200:
-                description: Result Articles
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/Response"
-            400:
-                description: Error Server
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
+  post:
+    tags:
+      - maqolalar
+    summary: Maqolalar
+    description: Articles
+    requestBody:
+      description: Add Article
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PostArticle"
+    responses:
+      200:
+        description: Result Articles
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Response"
+      400:
+        description: Error Server
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
 /articles/{id}:
-    get:
-        tags:
-            - maqolalar
-        summary: Maqolalar
-        description: Articles
-        parameters:
-            - name: id
-              in: path
-              description: ID for Article
-              required: true
-        responses:
-            200:
-                description: Result Articles
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/Response"
-            400:
-                description: Error Server
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-    put:
-        tags:
-            - maqolalar
-        summary: Maqolalar
-        description: Articles
-        parameters:
-            - name: id
-              in: path
-              description: ID for Article
-              required: true
-        requestBody:
-            description: Add Article
-            content:
-                application/json:
-                    schema:
-                        $ref: "#/components/schemas/Article"
-        responses:
-            200:
-                description: Result Articles
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/Response"
-            400:
-                description: Error Server
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-    delete:
-        tags:
-            - maqolalar
-        summary: Maqolalar
-        description: Articles
-        parameters:
-            - name: id
-              in: path
-              description: ID for Article
-              required: true
-        responses:
-            200:
-                description: Result Articles
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/Response"
-            400:
-                description: Error Server
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
+  get:
+    tags:
+      - maqolalar
+    summary: Maqolalar
+    description: Articles
+    parameters:
+      - name: id
+        in: path
+        description: ID for Article
+        required: true
+    responses:
+      200:
+        description: Result Articles
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Response"
+      400:
+        description: Error Server
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
+  put:
+    tags:
+      - maqolalar
+    summary: Maqolalar
+    description: Articles
+    parameters:
+      - name: id
+        in: path
+        description: ID for Article
+        required: true
+    requestBody:
+      description: Add Article
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Article"
+    responses:
+      200:
+        description: Result Articles
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Response"
+      400:
+        description: Error Server
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
+  delete:
+    tags:
+      - maqolalar
+    summary: Maqolalar
+    description: Articles
+    parameters:
+      - name: id
+        in: path
+        description: ID for Article
+        required: true
+    responses:
+      200:
+        description: Result Articles
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Response"
+      400:
+        description: Error Server
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
 
 components:
-    schemas:
-        Article:
-            type: object
-            properties:
-                art_id:
-                    type: integer
-                    format: int32
-                    exemple: 10
-                image:
-                    type: string
-                title:
-                    type: string
-                description:
-                    type: string
-                likes:
-                    type: integer
-                views:
-                    type: integer
-                add_date:
-                    type: date
-        PostArticle:
-            type: object
-            properties:
-                image:
-                    type: string
-                title:
-                    type: string
-                description:
-                    type: string
-        ArticleUser:
-            type: object
-            properties:
-                art_id:
-                    type: integer
-                    format: int32
-                    exemple: 10
-                image:
-                    type: string
-                title:
-                    type: string
-                description:
-                    type: string
-                likes:
-                    type: integer
-                views:
-                    type: integer
-                add_date:
-                    type: date
-                username:
-                    type: string
-                avatar:
-                    type: string
-                profession:
-                    type: string
-                user_id:
-                    type: integer
-        Response:
-            type: object
-            properties:
-                status:
-                    type: number
-                data:
-                    $ref: "#/components/schemas/Article"
-                message:
-                    type: string
+  schemas:
+    Article:
+      type: object
+      properties:
+        art_id:
+          type: integer
+          format: int32
+          exemple: 10
+        image:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        likes:
+          type: integer
+        views:
+          type: integer
+        add_date:
+          type: date
+    PostArticle:
+      type: object
+      properties:
+        image:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+    ArticleUser:
+      type: object
+      properties:
+        art_id:
+          type: integer
+          format: int32
+          exemple: 10
+        image:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        likes:
+          type: integer
+        views:
+          type: integer
+        add_date:
+          type: date
+        username:
+          type: string
+        avatar:
+          type: string
+        profession:
+          type: string
+        user_id:
+          type: integer
+    Response:
+      type: object
+      properties:
+        status:
+          type: number
+        data:
+          $ref: "#/components/schemas/Article"
+        message:
+          type: string

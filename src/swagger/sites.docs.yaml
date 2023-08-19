@@ -1,190 +1,190 @@
 # path:
 /sites:
-    get:
-        tags:
-            - saytlar
-        summary: Saytlar haqidagi ma'lumotlar olish
-        description: Bu yerdan Saytlarni ma'lumotlarini olasiz
-        responses:
-            200:
-                description: Hamma saytlar
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseSiteArray"
-            400:
-                description: Error Server
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-    post:
-        tags:
-            - saytlar
-        summary: Yangi Sayt qo'shish
-        description: Site qo'shish
-        requestBody:
-            description: To'ldirilishi kerak
-            content:
-                multipart/formdata:
-                    schema:
-                        $ref: "#/components/schemas/PostSite"
-                        required: true
-        responses:
-            201:
-                description: Yangi site qo'shildi
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseSite"
-            429:
-                description: Bad Request
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
+  get:
+    tags:
+      - saytlar
+    summary: Saytlar haqidagi ma'lumotlar olish
+    description: Bu yerdan Saytlarni ma'lumotlarini olasiz
+    responses:
+      200:
+        description: Hamma saytlar
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseSiteArray"
+      400:
+        description: Error Server
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
+  post:
+    tags:
+      - saytlar
+    summary: Yangi Sayt qo'shish
+    description: Site qo'shish
+    requestBody:
+      description: To'ldirilishi kerak
+      content:
+        multipart/formdata:
+          schema:
+            $ref: "#/components/schemas/PostSite"
+            required: true
+    responses:
+      201:
+        description: Yangi site qo'shildi
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseSite"
+      429:
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
 /sites/{id}:
-    get:
-        tags:
-            - saytlar
-        summary: Sayt haqidagi ma'lumotlar olish
-        description: Bu yerdan Saytni ma'lumotlarini olasiz
-        parameters:
-            - name: id
-              in: path
-              description: kerak bo'lgan saytning id raqamini kiriting
-              required: true
-        responses:
-            200:
-                description: So'ralgan sayt
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseSite"
-            400:
-                description: Error Server
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-    put:
-        tags:
-            - saytlar
-        summary: Saytni o'zgartirish
-        description: Bu yerdan Saytni ma'lumotlarini o'zgartirasiz
-        parameters:
-            - name: id
-              in: path
-              description: o'zgartirmoqchi bo'lgan saytning id raqamini kiriting
-              required: true
-        requestBody:
-            description: Qaysi qatorni o'zgartirish kerak bo'lsa shu qatorni to'ldiring
-            content:
-                multipart/formdata:
-                    schema:
-                        $ref: "#/components/schemas/PostSite"
-        responses:
-            200:
-                description: O'zgargan sayt
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseSite"
-            400:
-                description: Error Server
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-    delete:
-        tags:
-            - saytlar
-        summary: Saytni o'chirish
-        description: Saytni o'chirish bo'limi
-        parameters:
-            - name: id
-              in: path
-              description: saytning id raqamini kiriting
-              required: true
-        responses:
-            201:
-                description: sayt o'chirildi
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseSite"
-            429:
-                description: Bad Request
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
+  get:
+    tags:
+      - saytlar
+    summary: Sayt haqidagi ma'lumotlar olish
+    description: Bu yerdan Saytni ma'lumotlarini olasiz
+    parameters:
+      - name: id
+        in: path
+        description: kerak bo'lgan saytning id raqamini kiriting
+        required: true
+    responses:
+      200:
+        description: So'ralgan sayt
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseSite"
+      400:
+        description: Error Server
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
+  put:
+    tags:
+      - saytlar
+    summary: Saytni o'zgartirish
+    description: Bu yerdan Saytni ma'lumotlarini o'zgartirasiz
+    parameters:
+      - name: id
+        in: path
+        description: o'zgartirmoqchi bo'lgan saytning id raqamini kiriting
+        required: true
+    requestBody:
+      description: Qaysi qatorni o'zgartirish kerak bo'lsa shu qatorni to'ldiring
+      content:
+        multipart/formdata:
+          schema:
+            $ref: "#/components/schemas/PostSite"
+    responses:
+      200:
+        description: O'zgargan sayt
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseSite"
+      400:
+        description: Error Server
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
+  delete:
+    tags:
+      - saytlar
+    summary: Saytni o'chirish
+    description: Saytni o'chirish bo'limi
+    parameters:
+      - name: id
+        in: path
+        description: saytning id raqamini kiriting
+        required: true
+    responses:
+      201:
+        description: sayt o'chirildi
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseSite"
+      429:
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
 components:
-    schemas:
-        Site:
-            type: object
-            properties:
-                id:
-                    type: integer
-                    example: 10
-                name:
-                    type: string
-                link:
-                    type: string
-                author:
-                    type: string
-                image:
-                    type: string
-                contact:
-                    type: string
-                hashtag:
-                    type: string
-                likes:
-                    type: integer
-                    example: 15
-        PostSite:
-            type: object
-            properties:
-                name:
-                    type: string
-                link:
-                    type: string
-                author:
-                    type: string
-                image:
-                    type: string
-                    format: binary
-                contact:
-                    type: string
-                hashtag:
-                    type: string
-        ResponseSiteArray:
-            type: object
-            properties:
-                status:
-                    type: integer
-                    example: 200
-                data:
-                    type: array
-                    items:
-                        $ref: "#/components/schemas/Site"
-                message:
-                    type: string
-        ResponseSite:
-            type: object
-            properties:
-                status:
-                    type: integer
-                    example: 200
-                data:
-                    $ref: "#/components/schemas/Site"
-                message:
-                    type: string
-        ResponseError:
-            type: object
-            properties:
-                status:
-                    type: integer
-                    example: 400
-                message:
-                    type: string
+  schemas:
+    Site:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        name:
+          type: string
+        link:
+          type: string
+        author:
+          type: string
+        image:
+          type: string
+        contact:
+          type: string
+        hashtag:
+          type: string
+        likes:
+          type: integer
+          example: 15
+    PostSite:
+      type: object
+      properties:
+        name:
+          type: string
+        link:
+          type: string
+        author:
+          type: string
+        image:
+          type: string
+          format: binary
+        contact:
+          type: string
+        hashtag:
+          type: string
+    ResponseSiteArray:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Site"
+        message:
+          type: string
+    ResponseSite:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        data:
+          $ref: "#/components/schemas/Site"
+        message:
+          type: string
+    ResponseError:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string

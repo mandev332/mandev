@@ -1,141 +1,141 @@
 /gmail:
-    post:
-        tags:
-            - authoritharion
-        summary: Gmail orqali tasdiqlash
-        description: Gmail va password kiriting
-        requestBody:
-            description: Gmailga habar link yuboriladi
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            gmail:
-                                type: string
-                            password:
-                                type: string
-                        required: true
-        responses:
-            201:
-                description: Link gmailga yuboriladi
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseMessage"
-            429:
-                description: Bad Request
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-/register:
-    post:
-        tags:
-            - authoritharion
-        summary: Register
-        description: Ro'yhatdan o'tish bo'limi
-        requestBody:
-            description: To'ldirilishi kerak
-            content:
-                multipart/formdata:
-                    schema:
-                        $ref: "#/components/schemas/PostUser"
-                        required: true
-        responses:
-            201:
-                description: Yangi site qo'shildi
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseUser"
-            429:
-                description: Bad Request
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-/login:
-    post:
-        tags:
-            - authoritharion
-        summary: Login
-        description: Tokenni yangilash uchun login qilish bo'limi
-        requestBody:
-            description: To'ldirilishi kerak
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            gmail:
-                                type: string
-                            password:
-                                type: string
-                        required: true
-        responses:
-            201:
-                description: Yangi site qo'shildi
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseUser"
-            429:
-                description: Bad Request
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-/password:
-    post:
-        tags:
-            - authoritharion
-        summary: Kodni Tasdiqlash
-        description: Gmailga yuborilgan kodni tastiqlash
-        requestBody:
-            description: Gmailga yuborilgan kodni kiriting
-            content:
-                application/json:
-                    schema:
-                        type: object
-                        properties:
-                            checkPass:
-                                type: string
-                        required: true
-        responses:
-            201:
-                description: Link gmailga yuboriladi
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseMessage"
-            429:
-                description: Bad Request
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-/*:
-    get:
-        tags:
-            - boshqa
-        summary: Kutilmagan so'rovlar uchun
-        description: Har qanday noaniq so'rovlar
-        responses:
-            429:
-                description: Bad Request
-                content:
-                    application/json:
-                        schema:
-                            $ref: "#/components/schemas/ResponseError"
-
-components:
-    schemas:
-        ResponseMessage:
+  post:
+    tags:
+      - authoritharion
+    summary: Gmail orqali tasdiqlash
+    description: Gmail va password kiriting
+    requestBody:
+      description: Gmailga habar link yuboriladi
+      content:
+        application/json:
+          schema:
             type: object
             properties:
-                status:
-                    type: integer
-                    example: 201
-                message:
-                    type: string
+              gmail:
+                type: string
+              password:
+                type: string
+            required: true
+    responses:
+      201:
+        description: Link gmailga yuboriladi
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseMessage"
+      429:
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
+/register:
+  post:
+    tags:
+      - authoritharion
+    summary: Register
+    description: Ro'yhatdan o'tish bo'limi
+    requestBody:
+      description: To'ldirilishi kerak
+      content:
+        multipart/formdata:
+          schema:
+            $ref: "#/components/schemas/PostUser"
+            required: true
+    responses:
+      201:
+        description: Yangi site qo'shildi
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseUser"
+      429:
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
+/login:
+  post:
+    tags:
+      - authoritharion
+    summary: Login
+    description: Tokenni yangilash uchun login qilish bo'limi
+    requestBody:
+      description: To'ldirilishi kerak
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              gmail:
+                type: string
+              password:
+                type: string
+            required: true
+    responses:
+      201:
+        description: Yangi site qo'shildi
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseUser"
+      429:
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
+/password:
+  post:
+    tags:
+      - authoritharion
+    summary: Kodni Tasdiqlash
+    description: Gmailga yuborilgan kodni tastiqlash
+    requestBody:
+      description: Gmailga yuborilgan kodni kiriting
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              checkPass:
+                type: string
+            required: true
+    responses:
+      201:
+        description: Link gmailga yuboriladi
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseMessage"
+      429:
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
+/*:
+  get:
+    tags:
+      - boshqa
+    summary: Kutilmagan so'rovlar uchun
+    description: Har qanday noaniq so'rovlar
+    responses:
+      429:
+        description: Bad Request
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResponseError"
+
+components:
+  schemas:
+    ResponseMessage:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 201
+        message:
+          type: string

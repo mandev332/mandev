@@ -6,40 +6,40 @@ const PORT = process.env.PORT || 5050;
 const swRouter = Router();
 
 const swagger = swJsDoc({
-    swaggerDefinition: {
-        openapi: "3.0.0",
-        servers: [
-            {
-                url: "http://localhost:5545",
-                variables: {
-                    port: {
-                        enum: [PORT],
-                    },
-                },
-            },
-        ],
-        info: {
-            title: "DEMO DATAS",
-            version: "1.0.0",
-            description: `Ma'lumotlar ustida amal bajarish uchun tekin API`,
+  swaggerDefinition: {
+    openapi: "3.0.0",
+    servers: [
+      {
+        url: "http://localhost:5545",
+        variables: {
+          port: {
+            enum: [PORT],
+          },
         },
-        components: {
-            securitySchemes: {
-                Token: {
-                    type: "apiKey",
-                    name: "token",
-                    in: "header",
-                    description: "access_token",
-                },
-            },
-        },
+      },
+    ],
+    info: {
+      title: "DEMO DATAS",
+      version: "1.0.0",
+      description: `Ma'lumotlar ustida amal bajarish uchun tekin API`,
     },
-    apis: [
-        "swagger/article.docs.yaml",
-        "swagger/sites.docs.yaml",
-        "swagger/users.docs.yaml",
-        "swagger/gmail.docs.yaml",
-    ], // files containing annotations as above
+    components: {
+      securitySchemes: {
+        Token: {
+          type: "apiKey",
+          name: "token",
+          in: "header",
+          description: "access_token",
+        },
+      },
+    },
+  },
+  apis: [
+    "src/swagger/article.docs.yaml",
+    "src/swagger/sites.docs.yaml",
+    "src/swagger/users.docs.yaml",
+    "src/swagger/gmail.docs.yaml",
+  ], // files containing annotations as above
 });
 
 export default swRouter.use("/docs", swUi.serve, swUi.setup(swagger));
