@@ -38,10 +38,13 @@
     requestBody:
       description: To'ldirilishi kerak
       content:
-        multipart/formdata:
+        multipart/form-data:
           schema:
             $ref: "#/components/schemas/PostUser"
-            required: true
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PostUser"
+      required: true
     responses:
       201:
         description: Yangi site qo'shildi
@@ -128,7 +131,10 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ResponseError"
-
+    security:
+      - token:
+          - write:users
+          - read:users
 components:
   schemas:
     ResponseMessage:

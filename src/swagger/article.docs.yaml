@@ -27,7 +27,10 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ResponseError"
-
+    security:
+      - token:
+          - write:users
+          - read:users
   post:
     tags:
       - maqolalar
@@ -52,6 +55,10 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ResponseError"
+    security:
+      - token:
+          - write:users
+          - read:users
 /articles/{id}:
   get:
     tags:
@@ -76,6 +83,10 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ResponseError"
+    security:
+      - token:
+          - write:users
+          - read:users
   put:
     tags:
       - maqolalar
@@ -105,6 +116,10 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ResponseError"
+    security:
+      - token:
+          - write:users
+          - read:users
   delete:
     tags:
       - maqolalar
@@ -128,7 +143,10 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ResponseError"
-
+    security:
+      - token:
+          - write:users
+          - read:users
 components:
   schemas:
     Article:

@@ -180,6 +180,7 @@ const auth = {
     try {
       const { username, contact, gmail, password, avatar, profession, gender } =
         req.body;
+
       if (!gmail)
         throw new Error(
           "You need to register Gmail! Gmail-ni ro'yxatdan o'tkazishingiz zarur!"
@@ -187,7 +188,13 @@ const auth = {
 
       if (!username || !contact || !profession)
         throw new Error(
-          "You must send username, contact and profession! Siz ismingiz, telefon raqamingiz va yo'nalishingizni  yuborishingiz zarur!"
+          `You must send ${username ? "" : "username"}${
+            contact ? "" : ", contact"
+          }${profession ? "" : ", profession"}! Siz${
+            username ? "" : " ismingiz"
+          }${contact ? "" : ", telefon raqamingiz"}${
+            profession ? "" : ", yo'nalishingiz"
+          }ni  yuborishingiz zarur!`
         );
 
       jwt.RegExp(username, contact, password, profession, gender);

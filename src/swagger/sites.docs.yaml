@@ -1,4 +1,4 @@
-# path:
+s# path:
 /sites:
   get:
     tags:
@@ -18,6 +18,10 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ResponseError"
+    security:
+      - token:
+          - write:users
+          - read:users
   post:
     tags:
       - saytlar
@@ -26,7 +30,7 @@
     requestBody:
       description: To'ldirilishi kerak
       content:
-        multipart/formdata:
+        multipart/form-data:
           schema:
             $ref: "#/components/schemas/PostSite"
             required: true
@@ -43,6 +47,10 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ResponseError"
+    security:
+      - token:
+          - write:users
+          - read:users
 /sites/{id}:
   get:
     tags:
@@ -67,6 +75,10 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ResponseError"
+    security:
+      - token:
+          - write:users
+          - read:users
   put:
     tags:
       - saytlar
@@ -80,7 +92,7 @@
     requestBody:
       description: Qaysi qatorni o'zgartirish kerak bo'lsa shu qatorni to'ldiring
       content:
-        multipart/formdata:
+        multipart/form-data:
           schema:
             $ref: "#/components/schemas/PostSite"
     responses:
@@ -96,6 +108,10 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ResponseError"
+    security:
+      - token:
+          - write:users
+          - read:users
   delete:
     tags:
       - saytlar
@@ -119,6 +135,10 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ResponseError"
+    security:
+      - token:
+          - write:users
+          - read:users
 components:
   schemas:
     Site:
