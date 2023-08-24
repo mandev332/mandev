@@ -10,7 +10,7 @@ const swagger = swJsDoc({
     openapi: "3.0.0",
     servers: [
       {
-        url: "http://192.168.12.183:5545",
+        url: "http://159.89.98.34:5545",
         variables: {
           port: {
             enum: [PORT],
