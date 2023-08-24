@@ -22,20 +22,23 @@
       - token:
           - write:users
           - read:users
-/users/{id}:
-  get:
+  put:
     tags:
       - userlar
-    summary: User haqidagi ma'lumotlar olish
-    description: Bu yerdan Userni ma'lumotlarini olasiz
-    parameters:
-      - name: id
-        in: path
-        description: kerak bo'lgan userning id raqamini kiriting
-        required: true
+    summary: Userni o'zgartirish
+    description: Bu yerdan User o'zini ma'lumotlarini o'zgartiradi(token bilan)
+    requestBody:
+      description: Qaysi qatorni o'zgartirish kerak bo'lsa shu qatorni to'ldiring
+      content:
+        multipart/form-data:
+          schema:
+            $ref: "#/components/schemas/PostUser"
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PostUser"
     responses:
       200:
-        description: So'ralgan user
+        description: O'zgargan user
         content:
           application/json:
             schema:
@@ -50,25 +53,20 @@
       - token:
           - write:users
           - read:users
-  put:
+/users/{id}:
+  get:
     tags:
       - userlar
-    summary: Userni o'zgartirish
-    description: Bu yerdan Userni ma'lumotlarini o'zgartirasiz
+    summary: User haqidagi ma'lumotlar olish
+    description: Bu yerdan Userni ma'lumotlarini olasiz
     parameters:
       - name: id
         in: path
-        description: o'zgartirmoqchi bo'lgan userning id raqamini kiriting
+        description: kerak bo'lgan userning id raqamini kiriting
         required: true
-    requestBody:
-      description: Qaysi qatorni o'zgartirish kerak bo'lsa shu qatorni to'ldiring
-      content:
-        multipart/form-data:
-          schema:
-            $ref: "#/components/schemas/PostUser"
     responses:
       200:
-        description: O'zgargan user
+        description: So'ralgan user
         content:
           application/json:
             schema:
@@ -178,12 +176,11 @@ components:
           type: string
         contact:
           type: string
-          example: 991234567
         gmail:
           type: string
         password:
           type: string
-        avatar:
+        file:
           type: string
           format: binary
         profession:

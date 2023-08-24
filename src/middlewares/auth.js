@@ -10,10 +10,10 @@ const auth = {
   TOKEN: async (req, res, next) => {
     try {
       const token = req.headers?.token;
+
       if (jwt.VERIFY(token) instanceof Error)
         throw new Error("You are not registered! Siz ro'yxatdan o'tmagansiz!");
       const user = jwt.VERIFY(token);
-
       req.user = await fetch(userModel.GET, user.id);
       return next();
     } catch (error) {
@@ -138,6 +138,7 @@ const auth = {
       const file = req?.files?.file;
       if (!file) return next();
       let { contact } = req.body;
+      if (contact.length > 9) contact = contact.slice(contact.length - 9);
       if (req.method == "PUT") {
         user = await fetch(userModel.GET, req.user.id);
       } else {
@@ -166,7 +167,6 @@ const auth = {
       avatar = "/avatarka/users/" + (contact || user.contact) + "." + type;
       await file.mv(filePath + "." + type);
       req.body.avatar = avatar;
-
       return next();
     } catch (error) {
       res.status(400).json({
@@ -178,7 +178,7 @@ const auth = {
   },
   REGISTER: async (req, res, next) => {
     try {
-      const { username, contact, gmail, password, avatar, profession, gender } =
+      let { username, contact, gmail, password, avatar, profession, gender } =
         req.body;
 
       if (!gmail)
@@ -196,23 +196,26 @@ const auth = {
             profession ? "" : ", yo'nalishingiz"
           }ni  yuborishingiz zarur!`
         );
-
+      if (contact.length > 9) contact = contact.slice(contact.length - 9);
       jwt.RegExp(username, contact, password, profession, gender);
-
       let response = await fetch(
         userModel.POST,
         username,
         contact,
         gmail,
         sha256(password),
-        avatar || (gender == "male" ? "/users/boy.jpg" : "/users/girl.jpg"),
+        avatar ||
+          (gender.toLowerCase() == "male"
+            ? "/avatarka/users/boy.jpg"
+            : "/avatarka/users/girl.jpg"),
         profession,
         gender
       );
+      console.log(response);
 
       res.send({
         status: 200,
-        data: jwt.SIGN({ id: response }),
+        data: jwt.SIGN(response),
         message: "User added in users! Foydalanuvchi ro'yxatga qo'shildi!",
       });
     } catch (error) {

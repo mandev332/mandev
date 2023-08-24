@@ -42,6 +42,9 @@
         application/json:
           schema:
             $ref: "#/components/schemas/PostArticle"
+        multipart/form-data:
+          schema:
+            $ref: "#/components/schemas/PostArticle"
     responses:
       200:
         description: Result Articles

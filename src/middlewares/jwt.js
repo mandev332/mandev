@@ -2,7 +2,7 @@ import JWT from "jsonwebtoken";
 const jwt = {
   SIGN: (token) => {
     try {
-      return JWT.sign({ id: token }, process.env.SECRET);
+      return JWT.sign(token, process.env.SECRET);
     } catch (err) {
       return err;
     }

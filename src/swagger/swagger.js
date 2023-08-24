@@ -10,7 +10,7 @@ const swagger = swJsDoc({
     openapi: "3.0.0",
     servers: [
       {
-        url: "http://localhost:5545",
+        url: "http://192.168.12.183:5545",
         variables: {
           port: {
             enum: [PORT],
@@ -22,16 +22,6 @@ const swagger = swJsDoc({
       title: "DEMO DATAS",
       version: "1.0.0",
       description: `Ma'lumotlar ustida amal bajarish uchun tekin API`,
-    },
-    components: {
-      securitySchemes: {
-        Token: {
-          type: "apiKey",
-          name: "token",
-          in: "header",
-          description: "access_token",
-        },
-      },
     },
   },
   apis: [

@@ -33,7 +33,10 @@ s# path:
         multipart/form-data:
           schema:
             $ref: "#/components/schemas/PostSite"
-            required: true
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PostSite"
+        required: true
     responses:
       201:
         description: Yangi site qo'shildi
@@ -93,6 +96,9 @@ s# path:
       description: Qaysi qatorni o'zgartirish kerak bo'lsa shu qatorni to'ldiring
       content:
         multipart/form-data:
+          schema:
+            $ref: "#/components/schemas/PostSite"
+        application/json:
           schema:
             $ref: "#/components/schemas/PostSite"
     responses:
