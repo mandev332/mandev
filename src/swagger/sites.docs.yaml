@@ -33,10 +33,11 @@ s# path:
         multipart/form-data:
           schema:
             $ref: "#/components/schemas/PostSite"
+            required: true
         application/json:
           schema:
             $ref: "#/components/schemas/PostSite"
-        required: true
+            required: true
     responses:
       201:
         description: Yangi site qo'shildi
@@ -177,7 +178,7 @@ components:
           type: string
         author:
           type: string
-        image:
+        file:
           type: string
           format: binary
         contact:

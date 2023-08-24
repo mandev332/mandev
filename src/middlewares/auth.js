@@ -10,7 +10,6 @@ const auth = {
   TOKEN: async (req, res, next) => {
     try {
       const token = req.headers?.token;
-
       if (jwt.VERIFY(token) instanceof Error)
         throw new Error("You are not registered! Siz ro'yxatdan o'tmagansiz!");
       const user = jwt.VERIFY(token);
@@ -32,7 +31,7 @@ const auth = {
         throw new Error("You are not registered! Siz ro'yxatdan o'tmagansiz!");
       res.send({
         status: 200,
-        data: jwt.SIGN(user.id),
+        data: jwt.SIGN({ id: user.id }),
         message: "Welcome - Save a token! Xush kelibsiz - Tokenni saqlang!",
       });
     } catch (error) {
@@ -211,8 +210,6 @@ const auth = {
         profession,
         gender
       );
-      console.log(response);
-
       res.send({
         status: 200,
         data: jwt.SIGN(response),

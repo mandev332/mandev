@@ -59,7 +59,7 @@ const SiteConter = {
         await file.mv(path.join(process.cwd(), "src", "avatarka", image));
 
         // downloadImage(imagelink, image);
-        req.body.image = "/avatarka/" + (image || "sites/getter.png");
+        req.body.image = "/avatarka/" + (image || "sites/demo.jpg");
       }
       return next();
     } catch (err) {
@@ -83,7 +83,6 @@ const SiteConter = {
 
       let checkAuthor = await jwt.RegExp(author);
       if (1 != checkAuthor) throw new Error(checkAuthor);
-
       if (!name || !link || !author || !image || !contact || !hashtag)
         throw new Error(
           "You must send data! Siz ma'lumot yuborishingiz zarur!"

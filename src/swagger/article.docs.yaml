@@ -103,6 +103,9 @@
     requestBody:
       description: Add Article
       content:
+        multipart/form-data:
+          schema:
+            $ref: "#/components/schemas/Article"
         application/json:
           schema:
             $ref: "#/components/schemas/Article"
