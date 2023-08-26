@@ -11,7 +11,7 @@ const swagger = swJsDoc({
     servers: [
       {
         //url: "http://159.89.98.34:5545",
-        url: "https://mandev.onrender.com"
+        url: "http://localhost:"+PORT
         variables: {
           port: {
             enum: [PORT],
