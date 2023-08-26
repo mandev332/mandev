@@ -10,7 +10,8 @@ const swagger = swJsDoc({
     openapi: "3.0.0",
     servers: [
       {
-        url: "http://159.89.98.34:5545",
+        //url: "http://159.89.98.34:5545",
+        url: "https://mandev.onrender.com"
         variables: {
           port: {
             enum: [PORT],
